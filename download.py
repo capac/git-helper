@@ -14,3 +14,7 @@ def download():
     r.raise_for_status()
     OUT.write_bytes(r.content)
     print(f"Saved {len(r.content)/1e6:.1f} MB to {OUT}")
+
+
+if __name__ == "__main__":
+    download()
