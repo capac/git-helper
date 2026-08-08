@@ -1,10 +1,10 @@
 from bs4 import BeautifulSoup
 import re
-import pathlib
+from pathlib import Path
 
 
 def parse_book(html_path: str) -> list[dict]:
-    soup = BeautifulSoup(pathlib.Path(html_path).read_text("utf-8"), "lxml")
+    soup = BeautifulSoup(Path(html_path).read_text("utf-8"), "lxml")
     records = []
 
     for sect1 in soup.select("div.sect1"):
