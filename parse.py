@@ -1,6 +1,8 @@
 # ingest/parse.py
 from bs4 import BeautifulSoup
-import pathlib, re
+import re
+import pathlib
+
 
 def parse_book(html_path: str) -> list[dict]:
     soup = BeautifulSoup(pathlib.Path(html_path).read_text("utf-8"), "lxml")
@@ -8,12 +10,14 @@ def parse_book(html_path: str) -> list[dict]:
 
     for sect1 in soup.select("div.sect1"):
         chapter_tag = sect1.find(["h2"])
-        chapter_title = chapter_tag.get_text(strip=True) if chapter_tag else "Unknown"
+        chapter_title = (chapter_tag.get_text(strip=True)
+                         if chapter_tag else "Unknown")
         chapter_id = chapter_tag.get("id", "") if chapter_tag else ""
 
         for sect2 in sect1.select("div.sect2"):
             section_tag = sect2.find(["h3", "h4"])
-            section_title = section_tag.get_text(strip=True) if section_tag else "Unknown"
+            section_title = (section_tag.get_text(strip=True)
+                             if section_tag else "Unknown")
             section_id = section_tag.get("id", "") if section_tag else ""
 
             # Extract code blocks separately — preserve them intact
@@ -38,6 +42,7 @@ def parse_book(html_path: str) -> list[dict]:
             })
 
     return records
+
 
 def extract_commands(code_blocks: list[str]) -> list[str]:
     """Pull out lines that look like shell commands."""

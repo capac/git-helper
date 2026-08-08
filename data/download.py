@@ -5,6 +5,7 @@ from pathlib import Path
 URL = "https://github.com/progit/progit2/releases/download/2.1.450/progit.html"
 OUT = Path("data/progit.html")
 
+
 def download():
     OUT.parent.mkdir(exist_ok=True)
     if OUT.exists():
