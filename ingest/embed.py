@@ -1,6 +1,7 @@
-from openai import OpenAI
-from dotenv import load_dotenv
-load_dotenv()
+from dotenv import load_dotenv, find_dotenv
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
+from openai import OpenAI  # noqa: E402
 
 client = OpenAI()
 
