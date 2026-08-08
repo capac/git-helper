@@ -1,0 +1,20 @@
+[project]
+name = "git-commands-with-natural-language"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "capac", email = "capac@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.15.0",
+    "httpx>=0.28.1",
+]
+
+[project.scripts]
+git-commands-with-natural-language = "git_commands_with_natural_language:main"
+
+[build-system]
+requires = ["uv_build>=0.12.2,<0.13.0"]
+build-backend = "uv_build"
