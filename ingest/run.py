@@ -1,10 +1,9 @@
-# ingest/run.py
 import json
 import os
 from download import download
-from parse import parse_book
 from embed import embed_batch
 from load_qdrant import load
+from parse import parse_book
 
 
 def main():
