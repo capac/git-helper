@@ -6,6 +6,14 @@ COLLECTION = "progit"
 DIM = 1536  # text-embedding-3-small
 
 
+# ingest/load_qdrant.py
+from qdrant_client import QdrantClient
+from qdrant_client.models import Distance, VectorParams, PointStruct, PayloadSchemaType
+import uuid
+
+COLLECTION = "progit"
+DIM = 1536  # text-embedding-3-small
+
 def load(
         docs: list[dict],
         embeddings: list[list[float]],
@@ -28,4 +36,7 @@ def load(
         for doc, emb in zip(docs, embeddings)
     ]
     client.upsert(collection_name=COLLECTION, points=points)
+
+    # Required for filtering by doc type (strict mode rejects unindexed fields)
+    client.create_payload_index(COLLECTION, "type", PayloadSchemaType.KEYWORD)
     print(f"Loaded {len(points)} documents.")
