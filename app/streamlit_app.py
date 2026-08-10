@@ -26,13 +26,14 @@ import os
 from typing import Any
 
 import streamlit as st
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from openai import OpenAI
 from openai.types.chat import ChatCompletionMessageParam
 
 from rag_helper import GitRAG, SearchResult
 
-load_dotenv()
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
 
 
 # ── Page config ──────────────────────────────────────────────────────────────

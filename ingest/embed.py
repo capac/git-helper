@@ -1,8 +1,9 @@
 from dotenv import load_dotenv, find_dotenv
+from openai import OpenAI
+import tiktoken
+
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
-from openai import OpenAI  # noqa: E402
-import tiktoken  # noqa: E402
 
 EMBED_MODEL = "text-embedding-3-small"
 MAX_TOKENS = 8000   # leave a small buffer below the 8192 hard limit
