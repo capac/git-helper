@@ -1,6 +1,6 @@
-from bs4 import BeautifulSoup
 import re
 from pathlib import Path
+from bs4 import BeautifulSoup
 
 
 def parse_book(html_path: str) -> list[dict]:
@@ -31,13 +31,13 @@ def parse_book(html_path: str) -> list[dict]:
             prose = re.sub(r"\s+", " ", prose).strip()
 
             records.append({
-                "chapter_id":     chapter_id,
-                "chapter_title":  chapter_title,
-                "section_id":     section_id,
-                "section_title":  section_title,
-                "prose":          prose,
-                "code_blocks":    code_blocks,  # list of strings
-                "commands":       extract_commands(code_blocks),
+                "chapter_id": chapter_id,
+                "chapter_title": chapter_title,
+                "section_id": section_id,
+                "section_title": section_title,
+                "prose": prose,
+                "code_blocks": code_blocks,  # list of strings
+                "commands": extract_commands(code_blocks),
             })
 
     return records
