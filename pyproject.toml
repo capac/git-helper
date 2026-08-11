@@ -1,5 +1,5 @@
 [project]
-name = "git-commands-with-natural-language"
+name = "git-helper"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.scripts]
-git-commands-with-natural-language = "git_commands_with_natural_language:main"
+git-helper = "git_helper:main"
 
 [build-system]
 requires = ["uv_build>=0.12.2,<0.13.0"]
