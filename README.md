@@ -1,6 +1,10 @@
-# Git Commands Using Natural Language
+# Git Helper
 
-The aim of this project is to create a Streamlit web app interface where one can use natural language to retrieve the correct `git` command for a particular situation. As for documentation, it makes use of the HTML version of the [Pro Git book](https://github.com/progit/progit2/releases/download/2.1.450/progit.html "https://github.com/progit/progit2/releases/download/2.1.450/progit.html") written by Scott Chacon and Ben Straub, and of the [Pro Git manual](https://git-scm.com/docs "https://git-scm.com/docs") which both derive from the [Pro Git website](https://github.com/progit/progit2 "https://github.com/progit/progit2").
+## Introduction
+
+Many times you know what you need to do for a GitHub repository but you don't know the exact command to type in. Previously you would go to StackOverflow and see if the same question had been already asked, or go to websites like [Oh Shit, Git!?!](https://ohshitgit.com/ "https://ohshitgit.com/"), but what if you had an AI assistant that would return the correct `git` command using nothing but natural language. This is what my project is about! :smile:
+
+Using a Streamlit web app interface, you can use natural language to retrieve the correct `git` command for a particular situation. As for the documentation, it makes use of the HTML version of the [Pro Git book](https://github.com/progit/progit2/releases/download/2.1.450/progit.html "https://github.com/progit/progit2/releases/download/2.1.450/progit.html") written by Scott Chacon and Ben Straub, which derives from the [Pro Git website](https://github.com/progit/progit2 "https://github.com/progit/progit2").
 
 ## Directory layout
 
