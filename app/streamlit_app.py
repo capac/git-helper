@@ -36,11 +36,11 @@ dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
 
 
-# ── Page config ──────────────────────────────────────────────────────────────
+# Page config
 
 st.set_page_config(
     page_title="Git Helper",
-    page_icon="🌿",
+    page_icon="🤖",
     layout="centered",
     initial_sidebar_state="expanded",
 )
@@ -92,7 +92,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ── Session state ────────────────────────────────────────────────────────────
+# Session state
 
 def _init_state():
     if "messages" not in st.session_state:
@@ -106,7 +106,7 @@ def _init_state():
 _init_state()
 
 
-# ── Singleton clients ────────────────────────────────────────────────────────
+# Singleton clients
 
 @st.cache_resource
 def get_rag() -> GitRAG:
@@ -122,7 +122,7 @@ rag = get_rag()
 client = get_openai()
 
 
-# ── Agent tools ──────────────────────────────────────────────────────────────
+# Agent tools
 
 TOOLS: list[dict] = [
     {
@@ -245,7 +245,7 @@ call clarify_intent once, then answer.
 """
 
 
-# ── Tool execution ───────────────────────────────────────────────────────────
+# Tool execution
 
 def run_tool(
         name: str,
@@ -293,7 +293,7 @@ def run_tool(
     return json.dumps(payload), results
 
 
-# ── Agent loop ───────────────────────────────────────────────────────────────
+# Agent loop
 
 def run_agent(user_message: str) -> tuple[str, list[SearchResult]]:
     """
@@ -323,7 +323,7 @@ def run_agent(user_message: str) -> tuple[str, list[SearchResult]]:
 
         msg = response.choices[0].message
 
-        # ── No tool call → final answer ──────────────────────────────────
+        # No tool call → final answer
         if not msg.tool_calls:
             reply = msg.content or ""
             st.session_state.agent_history.append(
@@ -331,7 +331,7 @@ def run_agent(user_message: str) -> tuple[str, list[SearchResult]]:
             )
             return reply, all_results
 
-        # ── Tool calls → execute each, feed results back ─────────────────
+        # Tool calls → execute each, feed results back
         # Add the assistant message with tool_calls to history
         st.session_state.agent_history.append(
             msg.model_dump(exclude_unset=True)
@@ -367,7 +367,7 @@ def run_agent(user_message: str) -> tuple[str, list[SearchResult]]:
         )
 
 
-# ── Rendering helpers ────────────────────────────────────────────────────────
+# Rendering helpers
 
 def render_sources(results: list[SearchResult]):
     if not results:
@@ -404,10 +404,10 @@ def render_chat_history():
                 render_sources(msg["sources"])
 
 
-# ── Sidebar ──────────────────────────────────────────────────────────────────
+# Sidebar
 
 with st.sidebar:
-    st.markdown("## 🌿 Git Helper")
+    st.markdown("## Git Helper")
     st.markdown(
         "Ask anything about git in plain English. "
         "Powered by the [Pro Git book](https://git-scm.com/book/en/v2)."
@@ -428,7 +428,7 @@ with st.sidebar:
             st.session_state["_quick_q"] = q
 
     st.divider()
-    if st.button("🗑 Clear conversation", use_container_width=True):
+    if st.button("Clear conversation", use_container_width=True):
         st.session_state.messages = []
         st.session_state.agent_history = []
         st.session_state.last_sources = []
@@ -442,9 +442,9 @@ with st.sidebar:
     )
 
 
-# ── Main UI ──────────────────────────────────────────────────────────────────
+# Main UI
 
-st.title("🌿 Git Helper")
+st.title("Git Helper")
 st.caption("Ask in plain English — get the right git command, explained.")
 
 render_chat_history()

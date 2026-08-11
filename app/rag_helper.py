@@ -26,7 +26,7 @@ from qdrant_client.models import (
     )
 
 
-# ── Constants ────────────────────────────────────────────────────────────────
+# Constants
 
 COLLECTION = "progit"
 EMBED_MODEL = "text-embedding-3-small"
@@ -44,7 +44,7 @@ DESTRUCTIVE_COMMANDS = {
 }
 
 
-# ── Data model ───────────────────────────────────────────────────────────────
+# Data model
 
 @dataclass
 class SearchResult:
@@ -92,7 +92,7 @@ def _any_destructive(commands: list[str]) -> bool:
     return False
 
 
-# ── Core class ───────────────────────────────────────────────────────────────
+# Core class
 
 class GitRAG:
     """
@@ -117,7 +117,7 @@ class GitRAG:
         self.openai = openai_client
         self.collection = collection
 
-    # ── Constructors ────────────────────────────────────────────────────────
+    # Constructors
 
     @classmethod
     def from_env(cls) -> "GitRAG":
@@ -128,7 +128,7 @@ class GitRAG:
             openai_client=OpenAI(api_key=os.environ["OPENAI_API_KEY"]),
         )
 
-    # ── Public API ──────────────────────────────────────────────────────────
+    # Public API
 
     def search(
         self,
@@ -192,7 +192,7 @@ class GitRAG:
             total += len(block)
         return "\n\n---\n\n".join(blocks)
 
-    # ── Internal ────────────────────────────────────────────────────────────
+    # Internal
 
     def _embed(self, text: str) -> list[float]:
         text = text.replace("\n", " ").strip()
@@ -200,7 +200,7 @@ class GitRAG:
         return resp.data[0].embedding
 
 
-# ── Helpers ──────────────────────────────────────────────────────────────────
+# Helpers
 
 def _build_filter(doc_type: Optional[str]) -> Optional[Filter]:
     if doc_type is None:
