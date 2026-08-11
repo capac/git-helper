@@ -25,13 +25,8 @@ from qdrant_client.models import (
     Filter, FieldCondition, MatchValue, ScoredPoint
     )
 
-
 # Constants
-
-COLLECTION = "progit"
-EMBED_MODEL = "text-embedding-3-small"
-EMBED_DIM = 1536
-DEFAULT_TOP_K = 5
+from git_helper.config import COLLECTION, EMBED_MODEL, DEFAULT_TOP_K
 
 # git commands whose effects are hard or impossible to reverse
 DESTRUCTIVE_COMMANDS = {
