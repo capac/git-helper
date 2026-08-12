@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS feedback (
     rating SMALLINT -- 1 = 👍, -1 = 👎
 );
 
+ALTER TABLE feedback ADD CONSTRAINT feedback_query_id_unique UNIQUE (query_id);
+
 -- Indexes used by Grafana queries
 CREATE INDEX IF NOT EXISTS idx_queries_ts ON queries(ts);
 CREATE INDEX IF NOT EXISTS idx_feedback_query ON feedback(query_id);
