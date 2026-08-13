@@ -21,6 +21,9 @@ Tools exposed to the agent
 
 from __future__ import annotations
 
+import time
+from monitor import log_query, log_feedback, get_recent_metrics
+
 import json
 import os
 from typing import Any
@@ -397,11 +400,13 @@ def render_sources(results: list[SearchResult]):
 
 
 def render_chat_history():
-    for msg in st.session_state.messages:
+    for i, msg in enumerate(st.session_state.messages):
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
             if msg["role"] == "assistant" and msg.get("sources"):
                 render_sources(msg["sources"])
+            if msg.get("query_id"):
+                render_feedback(msg["query_id"], key_suffix=str(i))
 
 
 # Sidebar
@@ -433,6 +438,13 @@ with st.sidebar:
         st.session_state.agent_history = []
         st.session_state.last_sources = []
         st.rerun()
+        metrics = get_recent_metrics(days=7)
+        if metrics and metrics.get("feedback_count", 0) > 0:
+            st.markdown("**Last 7 days**")
+            col1, col2 = st.columns(2)
+            col1.metric("Hit Rate", f"{float(metrics['hit_rate']):.0%}")
+            col2.metric("Avg Latency", f"{int(metrics['avg_latency_ms'])}ms")
+            st.caption(f"{metrics['total_queries']} queries · {metrics['feedback_count']} rated")
 
     st.markdown(
         "<div style='color:#484f58; font-size:0.7rem; margin-top:1rem;'>"
@@ -449,6 +461,17 @@ st.caption("Ask in plain English — get the right git command, explained.")
 
 render_chat_history()
 
+def render_feedback(query_id: int, key_suffix: str):
+    col1, col2, _ = st.columns([1, 1, 8])
+    with col1:
+        if st.button("👍", key=f"up_{key_suffix}"):
+            log_feedback(query_id, 1)
+            st.toast("Thanks for the feedback!", icon="✅")
+    with col2:
+        if st.button("👎", key=f"down_{key_suffix}"):
+            log_feedback(query_id, -1)
+            st.toast("Noted — we'll use this to improve.", icon="📝")
+
 # Handle quick-question buttons from sidebar
 user_input: str | None = None
 if "_quick_q" in st.session_state:
@@ -459,20 +482,35 @@ if chat_input:
     user_input = chat_input
 
 if user_input:
-    # Show the user bubble immediately
     st.session_state.messages.append({"role": "user", "content": user_input})
     with st.chat_message("user"):
         st.markdown(user_input)
 
-    # Run the agent with a spinner
     with st.chat_message("assistant"):
         with st.spinner("Searching Pro Git…"):
+            t0 = time.monotonic()
             reply, sources = run_agent(user_input)
+            elapsed_ms = int((time.monotonic() - t0) * 1000)
+
         st.markdown(reply)
         render_sources(sources)
 
-    # Persist for re-renders
+    # Count tool calls made this turn
+    tool_calls_count = sum(
+        1 for m in st.session_state.agent_history
+        if isinstance(m, dict) and m.get("role") == "tool"
+    )
+
+    query_id = log_query(
+        question = user_input,
+        answer = reply,
+        results = sources,
+        response_time_ms = elapsed_ms,
+        tool_calls_count = tool_calls_count,
+    )
+
     st.session_state.messages.append(
-        {"role": "assistant", "content": reply, "sources": sources}
+        {"role": "assistant", "content": reply,
+         "sources": sources, "query_id": query_id}
     )
     st.session_state.last_sources = sources
