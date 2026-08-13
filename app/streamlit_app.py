@@ -409,6 +409,17 @@ def render_chat_history():
                 render_feedback(msg["query_id"], key_suffix=str(i))
 
 
+def render_feedback(query_id: int, key_suffix: str):
+    col1, col2, _ = st.columns([1, 1, 8])
+    with col1:
+        if st.button("👍", key=f"up_{key_suffix}"):
+            log_feedback(query_id, 1)
+            st.toast("Thanks for the feedback!", icon="✅")
+    with col2:
+        if st.button("👎", key=f"down_{key_suffix}"):
+            log_feedback(query_id, -1)
+            st.toast("Noted — we'll use this to improve.", icon="📝")
+
 # Sidebar
 
 with st.sidebar:
@@ -438,13 +449,37 @@ with st.sidebar:
         st.session_state.agent_history = []
         st.session_state.last_sources = []
         st.rerun()
-        metrics = get_recent_metrics(days=7)
-        if metrics and metrics.get("feedback_count", 0) > 0:
-            st.markdown("**Last 7 days**")
-            col1, col2 = st.columns(2)
-            col1.metric("Hit Rate", f"{float(metrics['hit_rate']):.0%}")
-            col2.metric("Avg Latency", f"{int(metrics['avg_latency_ms'])}ms")
-            st.caption(f"{metrics['total_queries']} queries · {metrics['feedback_count']} rated")
+
+    metrics = get_recent_metrics(days=7)
+    if metrics and metrics.get("feedback_count", 0) > 0:
+        st.markdown("**Last 7 days**")
+        col1, col2 = st.columns(2)
+        col1.markdown(
+            f"""
+            <div style="text-align: center;">
+                <div style="font-size: 14px; color: #666;">Hit Rate</div>
+                <div style="font-size: 18px; font-weight: 600;">
+                    {float(metrics['hit_rate']):.0%}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        col2.markdown(
+            f"""
+            <div style="text-align: center;">
+                <div style="font-size: 14px; color: #666;">Average Latency</div>
+                <div style="font-size: 18px; font-weight: 600;">
+                    {int(metrics['avg_latency_ms'])} ms
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.caption(
+            f"{metrics['total_queries']} queries · "
+            f"{metrics['feedback_count']} rated"
+            )
 
     st.markdown(
         "<div style='color:#484f58; font-size:0.7rem; margin-top:1rem;'>"
@@ -461,17 +496,6 @@ st.caption("Ask in plain English — get the right git command, explained.")
 
 render_chat_history()
 
-def render_feedback(query_id: int, key_suffix: str):
-    col1, col2, _ = st.columns([1, 1, 8])
-    with col1:
-        if st.button("👍", key=f"up_{key_suffix}"):
-            log_feedback(query_id, 1)
-            st.toast("Thanks for the feedback!", icon="✅")
-    with col2:
-        if st.button("👎", key=f"down_{key_suffix}"):
-            log_feedback(query_id, -1)
-            st.toast("Noted — we'll use this to improve.", icon="📝")
-
 # Handle quick-question buttons from sidebar
 user_input: str | None = None
 if "_quick_q" in st.session_state:
@@ -482,10 +506,12 @@ if chat_input:
     user_input = chat_input
 
 if user_input:
+    # Show the user bubble immediately
     st.session_state.messages.append({"role": "user", "content": user_input})
     with st.chat_message("user"):
         st.markdown(user_input)
 
+    # Run the agent with a spinner
     with st.chat_message("assistant"):
         with st.spinner("Searching Pro Git…"):
             t0 = time.monotonic()
@@ -495,6 +521,7 @@ if user_input:
         st.markdown(reply)
         render_sources(sources)
 
+    # Persist for re-renders
     # Count tool calls made this turn
     tool_calls_count = sum(
         1 for m in st.session_state.agent_history
