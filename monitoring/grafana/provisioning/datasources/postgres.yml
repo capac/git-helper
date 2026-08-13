@@ -4,10 +4,10 @@ datasources:
   - name:     PostgreSQL
     type:     postgres
     url:      postgres:5432
-    database: gitadvisor
-    user:     gitadvisor
+    database: githelper
+    user:     githelper
     secureJsonData:
-      password: gitadvisor
+      password: githelper
     jsonData:
       sslmode:         disable
       postgresVersion: 1600
