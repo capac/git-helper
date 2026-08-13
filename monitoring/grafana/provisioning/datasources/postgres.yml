@@ -1,0 +1,15 @@
+apiVersion: 1
+
+datasources:
+  - name:     PostgreSQL
+    type:     postgres
+    url:      postgres:5432
+    database: gitadvisor
+    user:     gitadvisor
+    secureJsonData:
+      password: gitadvisor
+    jsonData:
+      sslmode:         disable
+      postgresVersion: 1600
+      timescaledb:     false
+    isDefault: true
