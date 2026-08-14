@@ -514,30 +514,36 @@ if user_input:
     # Run the agent with a spinner
     with st.chat_message("assistant"):
         with st.spinner("Searching Pro Git…"):
-            t0 = time.monotonic()
-            reply, sources = run_agent(user_input)
-            elapsed_ms = int((time.monotonic() - t0) * 1000)
+            try:
+                t0 = time.monotonic()
+                reply, sources = run_agent(user_input)
+                elapsed_ms = int((time.monotonic() - t0) * 1000)
+            except Exception as e:
+                st.error(f"Something went wrong: {e}")
+                st.stop()
 
         st.markdown(reply)
         render_sources(sources)
 
-    # Persist for re-renders
-    # Count tool calls made this turn
-    tool_calls_count = sum(
-        1 for m in st.session_state.agent_history
-        if isinstance(m, dict) and m.get("role") == "tool"
-    )
+        # Count tool calls made this turn
+        tool_calls_count = sum(
+            1 for m in st.session_state.agent_history
+            if isinstance(m, dict) and m.get("role") == "tool"
+        )
 
-    query_id = log_query(
-        question = user_input,
-        answer = reply,
-        results = sources,
-        response_time_ms = elapsed_ms,
-        tool_calls_count = tool_calls_count,
-    )
+        query_id = log_query(
+            question = user_input,
+            answer = reply,
+            results = sources,
+            response_time_ms = elapsed_ms,
+            tool_calls_count = tool_calls_count,
+        )
+
+        # Render feedback buttons right now, in this same script run
+        render_feedback(query_id, key_suffix="latest")
 
     st.session_state.messages.append(
         {"role": "assistant", "content": reply,
-         "sources": sources, "query_id": query_id}
+        "sources": sources, "query_id": query_id}
     )
     st.session_state.last_sources = sources
