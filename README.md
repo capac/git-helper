@@ -11,9 +11,10 @@ Using a Streamlit web app interface, you can use natural language to retrieve th
 The directory layout of the project is as following:
 
 ```text
-git-commands-with-natural-language/
+git-helper/
 ├── app/
 │   ├── rag_helper.py             # RAGBase subclass using Qdrant
+|   ├── monitor.py
 │   └── streamlit_app.py
 ├── data/
 │   ├── embeddings_cache.json
@@ -26,6 +27,13 @@ git-commands-with-natural-language/
 |   ├── metrics.json              # latest run summary, gitignore this
 |   ├── results.csv               # per-question results, gitignore this
 |   └── save_metrics.py           # persists metrics.json to PostgreSQL
+├── monitoring/
+│   ├── docker-compose.yml        # Docker Compose file for Grafana and PostgreSQL
+│   ├── grafana/
+│   │   └── provisioning/
+│   │       └── datasources/
+│   │           └── postgres.yml
+│   └── init.sql
 ├── ingest/
 │   ├── download.py
 │   ├── embed.py
@@ -33,7 +41,6 @@ git-commands-with-natural-language/
 │   ├── parse.py
 │   └── run.py                    # entrypoint: python -m ingest.run
 ├── .env
-├── docker-compose.yml            # optional: qdrant local container
 └── requirements.txt
 ```
 
