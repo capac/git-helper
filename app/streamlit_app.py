@@ -408,22 +408,17 @@ def render_chat_history():
                 render_feedback(msg["query_id"], key_suffix=str(i))
 
 
+@st.fragment
 def render_feedback(query_id: int, key_suffix: str):
-    col1, col2, col3 = st.columns([1, 1, 8])
+    col1, col2, _ = st.columns([1, 1, 8])
     with col1:
-        st.button("👍", key=f"up_{key_suffix}")
+        if st.button("👍", key=f"up_{key_suffix}"):
+            log_feedback(query_id, 1)
+            st.toast("Thanks for the feedback!", icon="✅")
     with col2:
-        st.button("👎", key=f"down_{key_suffix}")
-
-    if st.session_state.get(f"up_{key_suffix}"):
-        log_feedback(query_id, 1)
-        with col3:
-            st.success("Thanks for the feedback!", icon="✅")
-
-    if st.session_state.get(f"down_{key_suffix}"):
-        log_feedback(query_id, -1)
-        with col3:
-            st.warning("Noted — we'll use this to improve.", icon="📝")
+        if st.button("👎", key=f"down_{key_suffix}"):
+            log_feedback(query_id, -1)
+            st.toast("Noted — we'll use this to improve.", icon="📝")
 
 # Sidebar
 
@@ -552,3 +547,4 @@ if user_input:
         "sources": sources, "query_id": query_id}
     )
     st.session_state.last_sources = sources
+    st.rerun()
