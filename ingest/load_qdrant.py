@@ -2,17 +2,13 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 import uuid
 
-COLLECTION = "progit"
-DIM = 1536  # text-embedding-3-small
-
+from src.git_helper import COLLECTION, DIM
 
 # ingest/load_qdrant.py
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct, PayloadSchemaType
 import uuid
 
-COLLECTION = "progit"
-DIM = 1536  # text-embedding-3-small
 
 def load(
         docs: list[dict],

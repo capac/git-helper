@@ -5,8 +5,8 @@ import tiktoken
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
 
-EMBED_MODEL = "text-embedding-3-small"
-MAX_TOKENS = 8000   # leave a small buffer below the 8192 hard limit
+# Constants
+from git_helper.config import EMBED_MODEL, MAX_TOKENS
 
 client = OpenAI()
 _enc = tiktoken.get_encoding("cl100k_base")
