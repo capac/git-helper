@@ -40,7 +40,6 @@ load_dotenv(dotenv_path)
 
 
 # Page config
-
 st.set_page_config(
     page_title="Git Helper",
     page_icon="🤖",
@@ -96,7 +95,6 @@ st.markdown("""
 
 
 # Session state
-
 def _init_state():
     if "messages" not in st.session_state:
         st.session_state.messages = []       # chat history shown in UI
@@ -109,7 +107,6 @@ def _init_state():
 _init_state()
 
 # Singleton clients
-
 @st.cache_resource
 def get_rag() -> GitRAG:
     return GitRAG.from_env()
@@ -125,7 +122,6 @@ client = get_openai()
 
 
 # Agent tools
-
 TOOLS: list[dict] = [
     {
         "type": "function",
@@ -248,7 +244,6 @@ call clarify_intent once, then answer.
 
 
 # Tool execution
-
 def run_tool(
         name: str,
         args: dict[str, Any]
@@ -296,7 +291,6 @@ def run_tool(
 
 
 # Agent loop
-
 def run_agent(user_message: str) -> tuple[str, list[SearchResult]]:
     """
     Run the agentic loop for a single user turn.
@@ -370,7 +364,6 @@ def run_agent(user_message: str) -> tuple[str, list[SearchResult]]:
 
 
 # Rendering helpers
-
 def render_sources(results: list[SearchResult]):
     if not results:
         return
@@ -421,7 +414,6 @@ def render_feedback(query_id: int, key_suffix: str):
             st.toast("Noted — we'll use this to improve.", icon="📝")
 
 # Sidebar
-
 with st.sidebar:
     st.markdown("## Git Helper")
     st.markdown(
@@ -490,7 +482,6 @@ with st.sidebar:
 
 
 # Main UI
-
 st.title("Git Helper")
 st.caption("Ask in plain English — get the right git command, explained.")
 

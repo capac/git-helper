@@ -40,7 +40,6 @@ DESTRUCTIVE_COMMANDS = {
 
 
 # Data model
-
 @dataclass
 class SearchResult:
     doc_id: str
@@ -88,7 +87,6 @@ def _any_destructive(commands: list[str]) -> bool:
 
 
 # Core class
-
 class GitRAG:
     """
     Thin wrapper around Qdrant + OpenAI embeddings.
@@ -113,7 +111,6 @@ class GitRAG:
         self.collection = collection
 
     # Constructors
-
     @classmethod
     def from_env(cls) -> "GitRAG":
         """Build from environment variables (12-factor style)."""
@@ -124,7 +121,6 @@ class GitRAG:
         )
 
     # Public API
-
     def search(
         self,
         query: str,
@@ -188,7 +184,6 @@ class GitRAG:
         return "\n\n---\n\n".join(blocks)
 
     # Internal
-
     def _embed(self, text: str) -> list[float]:
         text = text.replace("\n", " ").strip()
         resp = self.openai.embeddings.create(input=[text], model=EMBED_MODEL)
@@ -196,7 +191,6 @@ class GitRAG:
 
 
 # Helpers
-
 def _build_filter(doc_type: Optional[str]) -> Optional[Filter]:
     if doc_type is None:
         return None

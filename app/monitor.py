@@ -19,7 +19,6 @@ if TYPE_CHECKING:
 
 
 # Connection
-
 def _get_conn():
     return psycopg2.connect(os.environ["POSTGRES_URL"])
 
@@ -36,7 +35,6 @@ def _cursor():
 
 
 # Write
-
 def log_query(
     question: str,
     answer: str,
@@ -89,7 +87,6 @@ def log_feedback(query_id: int, rating: int) -> None:
 
 
 # Read (for optional in-app metrics panel)
-
 def get_recent_metrics(days: int = 7) -> dict:
     """
     Returns hit_rate and mrr for the last `days` days.
