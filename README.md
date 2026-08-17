@@ -10,8 +10,8 @@ Using a Streamlit web app interface, you can use natural language to retrieve th
     <img src="images/streamlit-web-app.png" alt="Streamlit web app" width="800" style="center"/>
 </p>
 
-<p align="center">
-Image of Streamlit Git Helper web app.
+<p align="center" style="font-size: 0.9em;">
+<small>Image of Streamlit Git Helper web app.</small>
 </p>
 
 The knowledge base is generated from the HTML version of the [Pro Git book](https://github.com/progit/progit2/releases/download/2.1.450/progit.html "https://github.com/progit/progit2/releases/download/2.1.450/progit.html") (version 2.1.450) written by Scott Chacon and Ben Straub, which is available online at the [Pro Git website](https://github.com/progit/progit2 "https://github.com/progit/progit2").
@@ -91,8 +91,8 @@ This command will launch Docker using the `docker-compose.yml` config. You may a
     <img src="images/grafana-dashboard.png" alt="Grafana dashboard" width="800" style="center"/>
 </p>
 
-<p align="center">
-Image of Grafana dashboard with hit rate over time, mean reciprocal rank over time, average latency in milliseconds and the table review of retrieved documents.
+<p align="center" style="font-size: 0.9em;">
+  Image of Grafana dashboard with hit rate over time, mean reciprocal rank over time, average latency in milliseconds and the table review of retrieved documents.
 </p>
 
 To launch the Streamlit web app locally just run,
