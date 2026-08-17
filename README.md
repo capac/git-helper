@@ -6,7 +6,13 @@ Many times you know what you need to do in a GitHub repository but you don't kno
 
 Using a Streamlit web app interface, you can use natural language to retrieve the correct `git` command for a particular situation. Buttons for user feedback are positioned below each output response. These are used to measure hit rate and average latency which are present in the lower left-hand corner of the  web app. Below is an image of the web app to give you an idea of what it looks like.
 
-!["Streamlit web app"](images/streamlit-web-app.png)
+<p align="center">
+    <img src="images/streamlit-web-app.png" alt="Streamlit web app" width="800" style="center"/>
+</p>
+
+<p align="center">
+Image of Streamlit Git Helper web app.
+</p>
 
 The knowledge base is generated from the HTML version of the [Pro Git book](https://github.com/progit/progit2/releases/download/2.1.450/progit.html "https://github.com/progit/progit2/releases/download/2.1.450/progit.html") (version 2.1.450) written by Scott Chacon and Ben Straub, which is available online at the [Pro Git website](https://github.com/progit/progit2 "https://github.com/progit/progit2").
 
@@ -59,7 +65,13 @@ In order to have the Streamlit app running locally in a browser, use the command
 
 This will create a local Python environment using [uv](https://docs.astral.sh/uv/ "https://docs.astral.sh/uv/") which will also install all of the dependencies.
 
-After that you need to create a [Qdrant](https://cloud.qdrant.io "https://cloud.qdrant.io") account for a free Qdrant cluster instance to host the embeddings created from the book. The Qdrant cluster is accessed locally through the `QDRANT_API_KEY` and `QDRANT_URL` API keys, which need to be saved in a `.env` file in the local repository. You will also require an Open AI API key, to be saved in the `.env` file and accessed through the `OPENAI_API_KEY` variable for the agentic RAG part of the project. Once the API keys are saved, run the following command from `Makefile`,
+After that you need to create a [Qdrant](https://cloud.qdrant.io "https://cloud.qdrant.io") account for a free Qdrant cluster instance to host the embeddings created from the book. The Qdrant cluster is accessed locally through the `QDRANT_API_KEY` and `QDRANT_URL` API keys, which need to be saved in a `.env` file in the root of the local directory. For the agentic RAG part of the project you will need an Open AI API key, to be saved in the `.env` file and accessed through the `OPENAI_API_KEY` variable. This will require purchasing at least $5 of OpenAI credit. You also need to save the following line in the `.env` file for PostgreSQL,
+
+```language-bash
+POSTGRES_URL=postgresql://githelper:githelper@localhost:5432/githelper
+```
+
+Once the API keys are saved, run the following command from `Makefile`,
 
 ```language-bash
 > make ingest
@@ -75,7 +87,13 @@ To setup the PostgreSQL and Grafana environments, make sure Docker is installed 
 
 This command will launch Docker using the `docker-compose.yml` config. You may access Grafana in a browser at [http://localhost:3000](http://localhost:3000). The instance-agnostic dashboard created in this project is saved in the `monitoring` folder as `git-helper-dashboard.json` and can be loaded into Grafana. Below is the image of the Grafana dashboard running for several days with hit rate over time, mean reciprocal rank over time, average latency in milliseconds and the table review of retrieved documents.
 
-!["Grafana dashboard"](images/grafana-dashboard.png)
+<p align="center">
+    <img src="images/grafana-dashboard.png" alt="Grafana dashboard" width="800" style="center"/>
+</p>
+
+<p align="center">
+Image of Grafana dashboard with hit rate over time, mean reciprocal rank over time, average latency in milliseconds and the table review of retrieved documents.
+</p>
 
 To launch the Streamlit web app locally just run,
 
