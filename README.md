@@ -14,36 +14,34 @@ The directory layout of the project is as following:
 
 ```text
 git-helper/
+├── .venv
 ├── app/
-│   ├── rag_helper.py             # RAGBase subclass using Qdrant
-|   ├── monitor.py                # Logs queries, documents and feedback to PostgreSQL
+|   ├── monitor.py
+│   ├── rag_helper.py
 │   └── streamlit_app.py
 ├── data/
 │   ├── embeddings_cache.json
-│   └── progit.html               # downloaded once
-├── evaluation/
-|   ├── evaluate.py               # computes hit rate + MRR, saves results.csv
-|   ├── generate_ground_truth.py  # pulls chunks from Qdrant, generates questions
-|   ├── ground_truth.csv          # generated, commit to git as your gold standard
-|   ├── ground_truth.json         # same data, human-readable
-|   ├── metrics.json              # latest run summary, gitignore this
-|   ├── results.csv               # per-question results, gitignore this
-|   └── save_metrics.py           # persists metrics.json to PostgreSQL
-├── monitoring/
-│   ├── docker-compose.yml        # Docker Compose file for Grafana and PostgreSQL
-│   ├── grafana/
-│   │   └── provisioning/
-│   │       └── datasources/
-│   │           └── postgres.yml
-│   └── init.sql
+│   └── progit.html
 ├── ingest/
 │   ├── download.py
 │   ├── embed.py
 │   ├── load_qdrant.py
 │   ├── parse.py
-│   └── run.py                    # entrypoint: python -m ingest.run
-├── .env
-└── requirements.txt
+│   └── run.py
+├── monitoring/
+│   ├── grafana/
+│   │   └── provisioning/
+│   │       └── datasources/
+│   │           └── postgres.yml
+│   ├── git-helper-dashboard.json
+│   ├── docker-compose.yml
+│   └── init.sql
+├── src/
+│   └── git_helper
+│       ├── __init__.py
+│       └── config.py
+├── Makefile
+└── README.md
 ```
 
 ## Evaluation
@@ -68,7 +66,7 @@ To setup the PostgreSQL and Grafana environments, make sure Docker is installed 
 > make monitoring-up
 ```
 
-You may access Grafana in a browser at [http://localhost:3000](http://localhost:3000). The instance-agnostic dashboard created in this project is saved in the `monitoring` folder as a JSON file, and can be used for sharing externally in another instance.
+This command will launch the Docker using the `docker-compose.yml` config. You may access Grafana in a browser at [http://localhost:3000](http://localhost:3000). The instance-agnostic dashboard created in this project is saved in the `monitoring` folder as `git-helper-dashboard.json`, and can be used for sharing externally in another instance.
 
 To stop the monitoring run the command,
 
@@ -88,6 +86,6 @@ This should automatically open the app in the default browser. Once you have rev
 > make clean
 ```
 
-## Packages
+## Technologies
 
-The project makes use of the following technologies: [Streamlit](https://streamlit.io/ "https://streamlit.io/"), [Qdrant](https://qdrant.tech/ "https://qdrant.tech/"), [Beautiful Soup](https://beautiful-soup-4.readthedocs.io/en/latest "https://beautiful-soup-4.readthedocs.io/en/latest"), the [OpenAI Python API library](https://pypi.org/project/openai/ "https://pypi.org/project/openai/"), [Grafana](https://grafana.com/ "https://grafana.com/") and Python version 3.12.9.
+The project makes use of the following software packages and tools: [Streamlit](https://streamlit.io/ "https://streamlit.io/"), [Qdrant](https://qdrant.tech/ "https://qdrant.tech/"), [Beautiful Soup](https://beautiful-soup-4.readthedocs.io/en/latest "https://beautiful-soup-4.readthedocs.io/en/latest"), the [OpenAI Python API library](https://pypi.org/project/openai/ "https://pypi.org/project/openai/"), [Grafana](https://grafana.com/ "https://grafana.com/") [Docker](https://www.docker.com/ "https://www.docker.com/"), [PostgreSQL](https://www.postgresql.org/ "https://www.postgresql.org/") and Python version 3.12.9.
